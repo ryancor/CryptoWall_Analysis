@@ -7,6 +7,9 @@
 ## Decrypt C2 IP Addresses
 ```
 ➜  CryptoWall git:(master) python decrypt_c2_ip_addrs.py
+[!] Searching PE sections for .data
+[+] Extracted encrypted data from PE File
+
 [+] Got plaintext key: 6hehbz4fp
 
 [+] Generated key bytes from plaintext:
