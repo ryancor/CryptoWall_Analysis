@@ -2,6 +2,7 @@
 ## Download
 1. Packed Version -> `47363b94cee907e2b8926c1be61150c7`
 2. Unpacked Version -> `919034c8efb9678f96b47a20fa6199f2`
+  - Unpacking CryptoWall will be posted about either on my medium account or on here :)
 
 ## Decrypt C2 IP Addresses
 ```
