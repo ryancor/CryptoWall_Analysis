@@ -1,0 +1,14 @@
+.DS_Store
+notes.txt
+cryptowall.idb
+cryptowall.bin
+cryptowall_055A0000.bin
+cryptowall_055A0000.idb
+Other-Variants
+extractions/cryptowall_note.html
+extractions/ioc_flossca963033b9a285b8cd0044df38146a932c838071.txt
+extractions/dic_ca963033b9a285b8cd0044df38146a932c838071.txt  
+extractions/file_ca963033b9a285b8cd0044df38146a932c838071.txt 
+extractions/floss_ca963033b9a285b8cd0044df38146a932c838071.txt    
+extractions/strings_ca963033b9a285b8cd0044df38146a932c838071.txt
+extractions/ioc_ca963033b9a285b8cd0044df38146a932c838071.txt
