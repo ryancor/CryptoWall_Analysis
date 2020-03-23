@@ -1,4 +1,4 @@
-# CryptoWall_Analysis
+# CryptoWall Analysis
 ## Download
 1. Packed Version -> `47363b94cee907e2b8926c1be61150c7`
 2. Unpacked Version -> `919034c8efb9678f96b47a20fa6199f2`
@@ -27,3 +27,4 @@ Decrypted data:
 [+] Decompressed successfully
 [+] Finished writing to file
 ```
+![Ransomware Note](https://i.ibb.co/r2mk1fc/Screen-Shot-2020-03-21-at-12-43-42-PM.png)
