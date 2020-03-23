@@ -1,8 +1,11 @@
 from qiling import *
 
+# Have a lot more to add here
+# Just testing the hooking technique
+
 def killerswitch(uc, address, size, ql):
 	if address == 0x004108A2:
-		print("\n---\nCryptoWall InternetC2Server Found, Emulation Stop\n---\n")
+		print("\n---\nCryptoWall Unpacked Address Found, Emulation Stop\n---\n")
 		ql.uc.emu_stop()
 
 if __name__ == "__main__":
