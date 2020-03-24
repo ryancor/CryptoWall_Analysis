@@ -32,3 +32,40 @@ Decrypted data:
 [+] Finished writing to file
 ```
 ![Ransomware Note](https://i.ibb.co/r2mk1fc/Screen-Shot-2020-03-21-at-12-43-42-PM.png)
+
+
+## Unpack CryptoWall with r2pipe (Still needs some bugs kinked out)
+```
+C:\CryptoWall\EMU-Scripts\Unpacker-r2.py
+Found main: 0x401100
+
+Found Second stage loader: 0x302c940
+            ; DATA XREFS from main @ 0x4024c7, 0x402dd4
+            ;-- rax:
+            ;-- rip:
+            0x0302c940      55             push ebp
+            0x0302c941      8bec           mov ebp, esp
+            0x0302c943      50             push eax
+            0x0302c944      b80e000000     mov eax, 0xe                ; 14
+        .-> 0x0302c949      81c404f0ffff   add esp, 0xfffff004
+        :   0x0302c94f      50             push eax
+        :   0x0302c950      48             dec eax
+        `=< 0x0302c951      75f6           jne 0x302c949
+            0x0302c953      8b45fc         mov eax, dword [ebp - 4]
+            0x0302c956      81c494f5ffff   add esp, 0xfffff594
+
+Hold your horses... this may take awhile
+Inside Second stage loaders call to EAX: 0x302ca57
+Inside Third stage loader: 0x1912a6
+Patched Third stage loader debugger check: 0x191451
+
+Found VirtualAlloc is at: 0x76cd66b0
+Inside VirtualAlloc Part I: 0x76cd66b0
+Inside VirtualAlloc Part II: 0x76cd66b0
+Inside WriteProcessMemory Part I: 0x76cd82f2
+Inside WriteProcessMemory Part II: 0x76cd82f2
+
+Found dumped PE:
+05800000: 4d5a 9000 0300 0000 0400 0000 ffff 0000  MZ..............
+05800010: b800 0000 0000 0000 4000 0000 0000 0000  ........@.......
+```
