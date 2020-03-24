@@ -103,8 +103,8 @@ def lznt1_decompress_data(cdata, logger=None):
 # End of Rekall Code
 
 
-def getRansomNote(signature_location):
-    pe = pefile.PE("cryptowall_055A0000.bin")
+def getRansomNote(filename, signature_location):
+    pe = pefile.PE(filename)
     compressed_note = b''
 
     print("[!] Searching PE sections for .data")
@@ -129,7 +129,7 @@ def getRansomNote(signature_location):
 
 def main():
     f = open("extractions/ransomware_note.html", "w")
-    buffer = getRansomNote(4)
+    buffer = getRansomNote("cryptowall_055A0000.bin", 4)
     if buffer[0:22].find("<html>", 6):
         print("[+] Decompressed successfully")
     f.write(buffer)
