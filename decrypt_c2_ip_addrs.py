@@ -16,11 +16,8 @@ def getEncryptedBytes(filename, offset, size):
 
 
 def GrabPlaintextPassword(string_buffer):
-    buf = ""
     password = string_buffer[4:13]
-    for i in range(len(password)):
-        buf += chr(password[i])
-    return buf
+    return ''.join([chr(i) for i in password])
 
 
 def Generate256ByteKeyFromPlaintext(plaintext_password):
