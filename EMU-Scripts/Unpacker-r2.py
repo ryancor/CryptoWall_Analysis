@@ -35,7 +35,7 @@ r.cmd('ds 2')
 print('Patched Third stage loader: ' + hex(get_eip()))
 
 VirtualAlloc = r.cmd('? [sym.imp.KERNEL32.dll_VirtualAlloc]')
-print('VirtualAlloc is at: ' + VirtualAlloc)
+print('\nVirtualAlloc is at: ' + VirtualAlloc)
 
 r.cmd('dsu [sym.imp.KERNEL32.dll_VirtualAlloc]')
 print('Inside VirtualAlloc Part I: ' + hex(get_eip()))
@@ -45,5 +45,6 @@ r.cmd('ds 4')
 r.cmd('dsu [sym.imp.KERNEL32.dll_WriteProcessMemory]')
 r.cmd('ds 4')
 r.cmd('dsu [sym.imp.KERNEL32.dll_WriteProcessMemory]')
+
 print("Found dumped PE")
-print(r.cmd('px @ ecx'))
+print(r.cmd('px @ rcx'))
