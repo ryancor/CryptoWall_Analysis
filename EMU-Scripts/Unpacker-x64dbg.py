@@ -44,7 +44,7 @@ debug.Run() # First hit on WriteProcessMemory
 debug.Run() # Second hit on WriteProcessMemory
 
 ecx = register.GetECX()
-if  memory.ReadByte(ecx) == 0x4D:
+if  memory.ReadWord(ecx) == 0x4D5A:
     gui.Message("Found Hidden PE File")
 
 x64dbg.DbgCmdExecDirect("savedata cryptowall_dump.exe, ecx, 0x00021000")
