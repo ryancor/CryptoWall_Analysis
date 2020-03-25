@@ -21,7 +21,7 @@ print('Found main: ' + hex(get_eip()))
 
 r.cmd('db 0x00402dda') # breakpoint at the end of push eax
 r.cmd('dc')
-print(r.cmd('ds 2')) # step into eax
+r.cmd('ds 2') # step into eax
 print('Found Second stage loader: ' + hex(get_eip()))
 print(r.cmd('pd 10')) # now we are inside the stage 2 of unpacking
 
@@ -38,17 +38,22 @@ print('Patched Third stage loader debugger check: ' + hex(get_eip()))
 VirtualAlloc = r.cmd('? [sym.imp.KERNEL32.dll_VirtualAlloc]')
 print('\nVirtualAlloc is at: ' + VirtualAlloc)
 
-r.cmd('dsu [sym.imp.KERNEL32.dll_VirtualAlloc]')
+r.cmd('db [sym.imp.KERNEL32.dll_VirtualAlloc]')
+r.cmd('dc')
 print('Inside VirtualAlloc Part I: ' + hex(get_eip()))
+# try stepping out of VA and see if you hit the 0055 addresses
 r.cmd('ds 4')
+r.cmd('db [sym.imp.KERNEL32.dll_VirtualAlloc]')
 r.cmd('dsu [sym.imp.KERNEL32.dll_VirtualAlloc]')
 print('Inside VirtualAlloc Part II: ' + hex(get_eip()))
 r.cmd('ds 4')
 
-r.cmd('dsu [sym.imp.KERNEL32.dll_WriteProcessMemory]')
+r.cmd('db [sym.imp.KERNEL32.dll_WriteProcessMemory]')
+r.cmd('dc')
 print('Inside WriteProcessMemory Part I: ' + hex(get_eip()))
 r.cmd('ds 4')
-r.cmd('dsu [sym.imp.KERNEL32.dll_WriteProcessMemory]')
+r.cmd('db [sym.imp.KERNEL32.dll_WriteProcessMemory]')
+r.cmd('dc')
 print('Inside WriteProcessMemory Part II: ' + hex(get_eip()))
 
 print("\nFound dumped PE:")
