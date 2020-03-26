@@ -28,7 +28,7 @@ debug.SetBreakpoint(0x00191446)
 debug.StepOver()
 debug.Run()
 x64dbg.DbgCmdExecDirect("eax = 0xc0")
-comment.Set(0, "Patched debug check")
+comment.Set(0, "Patched anti-vm check")
 
 x64dbg.DbgCmdExecDirect("bp VirtualAlloc")
 x64dbg.DbgCmdExecDirect("bp WriteProcessMemory")
