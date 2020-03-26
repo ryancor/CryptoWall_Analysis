@@ -127,6 +127,7 @@ def getRansomNote(filename, signature_location):
         exit(-1)
     pe.close()
 
+
 def main():
     f = open("extractions/ransomware_note.html", "w")
     buffer = getRansomNote("cryptowall_055A0000.bin", 4)
@@ -136,6 +137,7 @@ def main():
     f.close()
 
     print("[+] Finished writing to file")
+
 
 if __name__ == "__main__":
     main()
