@@ -22,16 +22,13 @@ def CustomBase64Decode(b64_str):
     charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/"
     buffer = b''
     next_char = 0
-    i = 0
-    y = 0
-    n = 0
-    z = 0
+    i, y, n, z = 0, 0, 0, 0
 
-    #print(len(b64_str))
+    # len(b64_str) + (-0x9a8)
     for _ in range(0x15CB4):
         char = 1
         while(1):
-            if ord(b64_str[y]) == ord(charset[z % len(charset)]):
+            if ord(b64_str[y]) == ord(charset[z]):
                 next_char = char - 1
                 z = 0
                 break
@@ -55,15 +52,23 @@ def CustomBase64Decode(b64_str):
 
 
 def DecryptToShellCode(b64decoded_str):
+    # TODO
     return
 
 
 def main():
     b64_str = GetEncryptedShellcode("cryptowall.bin", 0xa0, 0x1665c)
+    if b64_str[0:2] == 'cy':
+        print("\n[+] Successfully extracted encoded shellcode")
+
     b64_decoded = CustomBase64Decode(b64_str)
-    for i in range(len(b64_decoded)):
+    if b64_decoded[0:2] == b'\x9b\xce':
+        print("[+] Successfully decoded encrypted shellcode")
+
+    # Verify the bytes match in the programs debugger
+    for i in range(64):
         if i % 16 == 0:
-            print("\n")
+            print("")
         print("{} ".format(hex(b64_decoded[i])), end='')
 
 
