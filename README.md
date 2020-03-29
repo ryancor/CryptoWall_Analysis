@@ -33,7 +33,8 @@ Decrypted data:
 ```
 ![Ransomware Note](https://i.ibb.co/r2mk1fc/Screen-Shot-2020-03-21-at-12-43-42-PM.png)
 
-## Decode and Decrypt shellcode loader that injects the final unpacked PE (Not done)
+## Decode and Decrypt shellcode loader that injects the final unpacked PE
+### When decrypted, you'll notice the shellcode uses WriteProcessMemory to inject main ransomware PE file
 ```
 ➜  CryptoWall git:(master) python decrypt_shellcode_loader.py
 [!] Searching PE sections for .rsrc
