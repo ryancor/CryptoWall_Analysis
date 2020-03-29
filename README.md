@@ -2,7 +2,9 @@
 ## Download
 1. Packed Version -> `47363b94cee907e2b8926c1be61150c7`
 2. Unpacked Version -> `919034c8efb9678f96b47a20fa6199f2`
-  - Unpacking CryptoWall will be posted about either on my medium account or on here :)
+
+## About CryptoWall 3.0
+A strain of the Crowti ransomware, the variant known as Cryptowall 3.0, was spotted by researchers in early 2015. The interesting spin to these infections is that the malware communicates over the I2P anonymity network. This typical attack will demand Bitcoins and direct its C2 (command and control) over the Tor network, and send victims to darknet websites to decrypt the corrupted files once a key has been bought. A file named HELP_DECRYPT (ransom note) will appear in the form of either an html, png, or txt file that will direct the victims to the sites mentioned above. The victim's file system are encrypted with RSA-2048 bit encryption. CryptoWall initial attack is a loader executable that goes through various stages of code segment decryption processes to ultimately load the main PE file (the file that contains the actual malicious code) and inject the file into itself. #TODO, more to add#
 
 ## Decrypt C2 IP Addresses
 ```
@@ -25,7 +27,7 @@ Decrypted data:
 
 ## Retrieve Ransomware Note from Unpacked binary
 ```
-➜  CryptoWall git:(master) python2 decompress_ransomwarenote.py
+➜  CryptoWall git:(master) python2 decompress_ransomwarenote.py -d
 [!] Searching PE sections for .data
 [+] Found ransomware note
 [+] Decompressed successfully
