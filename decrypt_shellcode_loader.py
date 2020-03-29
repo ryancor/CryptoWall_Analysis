@@ -1,3 +1,4 @@
+import sys
 import pefile
 import base64
 from capstone import *
@@ -93,8 +94,19 @@ def saveDissassemblyFromBytes(shellcode, filename):
     file.close()
 
 
+def saveShellcodeToBin(shellcode, filename):
+    file = open(filename, 'wb')
+    file.write(shellcode)
+    file.close()
+
+
 def main():
-    output_filepath = "extractions/pe_process_injector_dump.asm"
+    if len(sys.argv) != 2:
+        print("./decrypt_shellcode_loader.py -d[dump assembly]/-e[emulate shellcode]")
+        exit(-1)
+
+    output_filepath_ = "extractions/pe_process_injector_dump"
+    output_filepath_ = output_filepath_ + ".asm" if sys.argv[1] == '-d' else output_filepath_ + ".bin"
 
     b64_str = GetEncryptedShellcode("cryptowall.bin", 0xa0, 0x1665c)
     if b64_str[0:2] == 'cy':
@@ -110,9 +122,21 @@ def main():
     if decrypted_shellcode[0:2] == b'\x55\x8b':
         print("\n\n[+] Successfully decrypted shellcode")
         printHexVal(decrypted_shellcode, 64)
-        print("\n[+] Using Capstone to Disassemble shellcode to x86")
-        saveDissassemblyFromBytes(decrypted_shellcode, output_filepath)
-        print("[+] Successfully saved assembly dump file to {}".format(output_filepath))
+        if sys.argv[1] == '-d':
+            print("\n[+] Using Capstone to Disassemble shellcode to x86")
+            saveDissassemblyFromBytes(decrypted_shellcode, output_filepath_)
+            print("[+] Successfully saved assembly dump file to {}".format(output_filepath_))
+        else:
+            print("\n[+] Emulating shellcode from {}".format(output_filepath_))
+            saveShellcodeToBin(decrypted_shellcode, output_filepath_)
+
+            try:
+                from EMU_Scripts.ShellcodeEMU_Qiling import test_windowssc_x86
+            except Exception:
+                print("[!] Install Qiling to use Emulator")
+                exit(-1)
+
+            test_windowssc_x86(output_filepath_)
 
 
 if __name__ == '__main__':
