@@ -34,7 +34,7 @@ Decrypted data:
 ![Ransomware Note](https://i.ibb.co/r2mk1fc/Screen-Shot-2020-03-21-at-12-43-42-PM.png)
 
 ## Decode and Decrypt shellcode loader that injects the final unpacked PE
-### When decrypted, you'll notice the shellcode uses WriteProcessMemory to inject main ransomware PE file at offset 0x224b in the dumped asm file. The 3rd argument on the stack (ECX) contains the PE file buffer
+### When decrypted, you'll notice the shellcode uses WriteProcessMemory to inject the main ransomware exe at offset 0x224b as seen in the dumped asm file. The 3rd argument on the stack (ECX) contains the PE file buffer.
 ```
 ➜  CryptoWall git:(master) python decrypt_shellcode_loader.py
 [!] Searching PE sections for .rsrc
