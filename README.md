@@ -100,5 +100,5 @@ Found dumped PE:
 05800010: b800 0000 0000 0000 4000 0000 0000 0000  ........@.......
 ```
 
-## Fake C2 Server
+## Fake C2 I2P Server
 ### Coming Soon
