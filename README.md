@@ -66,7 +66,7 @@ Decrypted data:
 
 ## Unpack CryptoWall with r2pipe (Still needs some bugs kinked out)
 ```
-C:\CryptoWall\EMU-Scripts\Unpacker-r2.py
+C:\CryptoWall\EMU-Scripts\>python.exe Unpacker-r2.py
 Found main: 0x401100
 
 Found Second stage loader: 0x302c940
@@ -101,4 +101,23 @@ Found dumped PE:
 ```
 
 ## Fake C2 I2P Server
-### Coming Soon
+### Run this server before executing the malware (Note: still have to add functionality that fake c2 sends back correct to the ransomware to continue with the file encryption process)
+```
+C:\CryptoWall\> python.exe fake_c2_i2p_server.py
+
+* Serving Flask app "fake_c2_server" (lazy loading)
+* Environment: production
+  WARNING: This is a development server. Do not use it in a production deployment.
+  Use a production WSGI server instead.
+* Debug mode: off
+* Running on http://127.0.0.1:80/ (Press CTRL+C to quit)
+127.0.0.1 - - [31/Mar/2020 15:10:06] "[33mGET / HTTP/1.1[0m" 404 -
+
+Data Received from CryptoWall Binary:
+------------------------------
+[!] Found URI Header: 93n14chwb3qpm
+[+] Created key from URI: 13349bchmnpqw
+[!] Found ciphertext: ff977e974ca21f20a160ebb12bd99bd616d3690c3f4358e2b8168f54929728a189c8797bfa12cfa031ee9c2fe02e31f0762178b3b640837e34d18407ecbc33
+[+] Recovered plaintext: b'{1|crypt1|C6B359277232C8E248AFD89C98E96D65|0|2|1||55.59.84.254}'
+127.0.0.1 - - [31/Mar/2020 15:11:52] "[37mPOST /93n14chwb3qpm HTTP/1.1[0m" 200 -
+```
