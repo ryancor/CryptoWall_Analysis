@@ -32,7 +32,7 @@ def setup(text):
     plaintext_key = ByteSwapURIPathString(text)
     rc4_data = dict(request.form)
     for val in rc4_data:
-        ciphertext = rc4_data[val]
+        ciphertext = rc4_data[val] # some py versions, value comes back in an array
 
     print("[!] Found URI Header: {}".format(text))
     print("[+] Created key from URI: {}".format(plaintext_key))
@@ -42,7 +42,8 @@ def setup(text):
     plaintext = rc4_key.decrypt(bytes.fromhex(ciphertext))
     print("[+] Recovered plaintext: {}".format(plaintext))
 
-    return "None", 200 # TODO: send back dict data with RSA pub key, RC4 encrypted
+    # TODO: send back dict data with RSA pub key, RC4 encrypted
+    return "C2 Server: Sending back RSA Key", 200
 
 
 if __name__ == "__main__":
