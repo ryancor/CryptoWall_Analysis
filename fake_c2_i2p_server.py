@@ -8,18 +8,18 @@ app = Flask(__name__)
 
 
 def ByteSwapURIPathString(uri_path):
-    plaintext_arr = list(plaintext_key)
+    uri_path_arr = list(uri_path)
     tmp = ''
-    n, z = len(plaintext_arr), len(plaintext_arr)
+    n, z = len(uri_path_arr), len(uri_path_arr)
     while(n):
         n -= 1
         for i in range(n):
-            if(ord(plaintext_arr[i]) >= ord(plaintext_arr[(i+1)%z])):
-                tmp = plaintext_arr[(i+1)%z]
-                plaintext_arr[(i+1)%z] = plaintext_arr[i]
-                plaintext_arr[i] = tmp
+            if(ord(uri_path_arr[i]) >= ord(uri_path_arr[(i+1)%z])):
+                tmp = uri_path_arr[(i+1)%z]
+                uri_path_arr[(i+1)%z] = uri_path_arr[i]
+                uri_path_arr[i] = tmp
 
-    return ''.join(plaintext_arr)
+    return ''.join(uri_path_arr)
 
 
 # Path is always a random generated string, so we have to wildcard the route
