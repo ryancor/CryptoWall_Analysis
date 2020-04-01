@@ -4,6 +4,7 @@
 from flask import Flask, escape, request
 from Crypto.Cipher import ARC4
 
+
 app = Flask(__name__)
 
 
@@ -41,8 +42,10 @@ def setup(text):
     plaintext = rc4_key.decrypt(bytes.fromhex(ciphertext))
     print("[+] Recovered plaintext: {}".format(plaintext))
 
-    return "None", 200 # C2 server will send back an RSA pub key if still active
+    return "None", 200 # TODO: send back dict data with RSA pub key, RC4 encrypted
 
 
 if __name__ == "__main__":
+    # test function works by using an example string generated from cryptowall
+    assert(ByteSwapURIPathString("tfuzxqh6wf7mng") == "67ffghmnqtuwxz")
     app.run(port=80)
