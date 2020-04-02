@@ -65,11 +65,11 @@ Decrypted data:
 ```
 ### Emulate Shellcode with SCDbg.exe
 ```
-C:\Users\ryan\Desktop\scdbg>scdbg.exe /bp 0x40205f /f ..\pe_process_injector_dump.bin
+C:\Users\ryan\Desktop\scdbg>scdbg.exe /s 3200000 /bp WriteProcessMemory /f ..\pe_process_injector_dump.bin
 Loaded 10587 bytes from file ..\pe_process_injector_dump.bin
-Breakpoint 0 set at 40205f
+Breakpoint 0 set at 7c802213
 Initialization Complete..
-Max Steps: 2000000
+Max Steps: 3200001
 Using base offset: 0x401000
 
 4011cf  GetProcAddress(LoadLibraryA)
@@ -83,28 +83,13 @@ Using base offset: 0x401000
 401c62  CreateToolhelp32Snapshot(2, 0) = 4823
 401c81  Process32First(4823)
 401cc7  Process32Next(4823)
-401cc7  Process32Next(4823)
-401cc7  Process32Next(4823)
-401cc7  Process32Next(4823)
-401cc7  Process32Next(4823)
-401cc7  Process32Next(4823)
 401ccf  CloseHandle(4823)
 401cd9  CreateToolhelp32Snapshot(2, 0) = 18be
 401cf8  Process32First(18be)
 401d3e  Process32Next(18be)
-401d3e  Process32Next(18be)
-401d3e  Process32Next(18be)
-401d3e  Process32Next(18be)
-401d3e  Process32Next(18be)
 401d46  CloseHandle(18be)
 401f40  VirtualAlloc(base=0 , sz=20400) = 600000
 40205f  GetProcAddress(GetCommandLineA)
-        Breakpoint 0 hit at: 40205f
-40205f   894598                          mov [ebp-0x68],eax              step: 1628770  foffset: 105f
-eax=7c812fbd  ecx=402226    edx=4022c5    ebx=0
-esp=12eaa8    ebp=12fdfc    esi=4022c8    edi=7c         EFL 44 P Z
-
-dbg> g
 4020d8  GetProcAddress(GetModuleHandleA)
 4020e9  GetProcAddress(GetModuleFileNameA)
 4020fa  GetProcAddress(VirtualAllocEx)
@@ -120,11 +105,21 @@ dbg> g
         Unknown Dll - Not implemented by libemu
 40218d  GetModuleFileNameA(hmod=0, buf=12f997, sz=105) = c:\Program Files\scdbg\parentApp.exe
 4021b4  GetCommandLineA() = 2531d0
-4021ba  CreateProcessA( scdbg.exe  /bp 0x40205f /f ..\pe_process_injector_dump.bin,  ) = 0x1269
+4021ba  CreateProcessA( scdbg.exe  /s 3200001 /bp WriteProcessMemory /f ..\pe_process_injector_dump.bin,  ) = 0x1269
 4021c8  ZwUnmapViewOfSection(h=1269, addr400000)
 4021e1  VirtualAllocEx(pid=1269, base=400000 , sz=25000) = 621000
+        Breakpoint 0 hit at: 7c802213
 4021fe  WriteProcessMemory(pid=1269, base=400000 , buf=600000, sz=400, written=12fd70)
+4021fe   0FB75F06                        movzx ebx,[edi+0x6]             step: 2685957  foffset: 11fe
+eax=1         ecx=600000    edx=600000    ebx=0
+esp=12eaa8    ebp=12fdfc    esi=ffffffff  edi=6000b8     EFL 44 P Z
+
+dbg> g
+        Breakpoint 0 hit at: 7c802213
 40224e  WriteProcessMemory(pid=1269, base=401000 , buf=600400, sz=16400, written=12fd70)
+40224e   83C408                          add esp,0x8             step: 2685987  foffset: 124e
+eax=1         ecx=600000    edx=401000    ebx=4
+esp=12eaa8    ebp=12fdfc    esi=0         edi=6000b8     EFL 4 P
 ```
 
 ## Unpack CryptoWall with r2pipe (Still needs some bugs kinked out)
