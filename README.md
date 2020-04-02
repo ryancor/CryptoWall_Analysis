@@ -63,6 +63,69 @@ Decrypted data:
 [+] Using Capstone to Disassemble shellcode to x86
 [+] Successfully saved assembly dump file to extractions/pe_process_injector_dump.asm
 ```
+### Emulate Shellcode with SCDbg.exe
+```
+C:\Users\ryan\Desktop\scdbg>scdbg.exe /bp 0x40205f /f ..\pe_process_injector_dump.bin
+Loaded 10587 bytes from file ..\pe_process_injector_dump.bin
+Breakpoint 0 set at 40205f
+Initialization Complete..
+Max Steps: 2000000
+Using base offset: 0x401000
+
+4011cf  GetProcAddress(LoadLibraryA)
+40165f  GetProcAddress(VirtualAlloc)
+401b6d  GetProcAddress(CreateToolhelp32Snapshot)
+401b81  GetProcAddress(Process32First)
+401b95  GetProcAddress(Process32Next)
+401ba9  GetProcAddress(CloseHandle)
+401c46  GetProcAddress(GetCurrentProcessId)
+401c52  GetCurrentProcessId() = 29
+401c62  CreateToolhelp32Snapshot(2, 0) = 4823
+401c81  Process32First(4823)
+401cc7  Process32Next(4823)
+401cc7  Process32Next(4823)
+401cc7  Process32Next(4823)
+401cc7  Process32Next(4823)
+401cc7  Process32Next(4823)
+401cc7  Process32Next(4823)
+401ccf  CloseHandle(4823)
+401cd9  CreateToolhelp32Snapshot(2, 0) = 18be
+401cf8  Process32First(18be)
+401d3e  Process32Next(18be)
+401d3e  Process32Next(18be)
+401d3e  Process32Next(18be)
+401d3e  Process32Next(18be)
+401d3e  Process32Next(18be)
+401d46  CloseHandle(18be)
+401f40  VirtualAlloc(base=0 , sz=20400) = 600000
+40205f  GetProcAddress(GetCommandLineA)
+        Breakpoint 0 hit at: 40205f
+40205f   894598                          mov [ebp-0x68],eax              step: 1628770  foffset: 105f
+eax=7c812fbd  ecx=402226    edx=4022c5    ebx=0
+esp=12eaa8    ebp=12fdfc    esi=4022c8    edi=7c         EFL 44 P Z
+
+dbg> g
+4020d8  GetProcAddress(GetModuleHandleA)
+4020e9  GetProcAddress(GetModuleFileNameA)
+4020fa  GetProcAddress(VirtualAllocEx)
+40210b  GetProcAddress(CreateProcessA)
+40211c  LoadLibraryA(ntdll)
+402120  GetProcAddress(ZwUnmapViewOfSection)
+402131  GetProcAddress(WriteProcessMemory)
+402142  GetProcAddress(GetThreadContext)
+402153  GetProcAddress(SetThreadContext)
+402164  GetProcAddress(ResumeThread)
+402175  GetProcAddress(ExitProcess)
+402189  GetModuleHandleA()
+        Unknown Dll - Not implemented by libemu
+40218d  GetModuleFileNameA(hmod=0, buf=12f997, sz=105) = c:\Program Files\scdbg\parentApp.exe
+4021b4  GetCommandLineA() = 2531d0
+4021ba  CreateProcessA( scdbg.exe  /bp 0x40205f /f ..\pe_process_injector_dump.bin,  ) = 0x1269
+4021c8  ZwUnmapViewOfSection(h=1269, addr400000)
+4021e1  VirtualAllocEx(pid=1269, base=400000 , sz=25000) = 621000
+4021fe  WriteProcessMemory(pid=1269, base=400000 , buf=600000, sz=400, written=12fd70)
+40224e  WriteProcessMemory(pid=1269, base=401000 , buf=600400, sz=16400, written=12fd70)
+```
 
 ## Unpack CryptoWall with r2pipe (Still needs some bugs kinked out)
 ```
