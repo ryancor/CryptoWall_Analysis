@@ -65,7 +65,7 @@ Decrypted data:
 ```
 ### Emulate Shellcode with SCDbg.exe
 ```
-C:\Users\ryan\Desktop\scdbg>scdbg.exe /s 3200000 /bp WriteProcessMemory /f ..\pe_process_injector_dump.bin
+C:\CryptoWall\>scdbg.exe /s 3200000 /bp WriteProcessMemory /f extractions\pe_process_injector_dump.bin
 Loaded 10587 bytes from file ..\pe_process_injector_dump.bin
 Breakpoint 0 set at 7c802213
 Initialization Complete..
