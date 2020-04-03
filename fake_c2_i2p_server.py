@@ -3,6 +3,10 @@
 # Place in your /etc/hosts 127.0.0.1 proxy2-2-2.i2p
 from flask import Flask, escape, request
 from Crypto.Cipher import ARC4
+from Crypto.PublicKey import RSA
+import string
+import random
+import binascii
 
 
 app = Flask(__name__)
@@ -21,6 +25,30 @@ def ByteSwapURIPathString(uri_path):
                 uri_path_arr[i] = tmp
 
     return ''.join(uri_path_arr)
+
+
+def GenerateUniqueID():
+    random_str = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(4)])
+    return random_str
+
+
+def EncryptC2ResponseBackToMalware(plaintext_key):
+    key = RSA.generate(2048)
+    pub_key = key.publickey().exportKey('PEM')
+    priv_key = key.exportKey('PEM')
+
+    uniqueID = GenerateUniqueID()
+    f = open('%s_key' % uniqueID, 'wb')
+    f.write(priv_key)
+    f.write(pub_key)
+    f.close()
+
+    c2_dict = b'{216|kpai7ycr7jxqkilp.onion|%b|US|%b}' % (uniqueID.encode(), pub_key)
+    rc4_key = ARC4.new(plaintext_key)
+    encrypted_data = rc4_key.encrypt(c2_dict)
+
+    print("\n[+] Sending encrypted data blob back to cryptowall process")
+    return binascii.hexlify(encrypted_data)
 
 
 # Path is always a random generated string, so we have to wildcard the route
@@ -42,8 +70,7 @@ def setup(text):
     plaintext = rc4_key.decrypt(bytes.fromhex(ciphertext))
     print("[+] Recovered plaintext: {}".format(plaintext))
 
-    # TODO: send back dict data with RSA pub key, RC4 encrypted
-    return "C2 Server: Sending back RSA Key", 200
+    return EncryptC2ResponseBackToMalware(plaintext_key.encode()), 200
 
 
 if __name__ == "__main__":

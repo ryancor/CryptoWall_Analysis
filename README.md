@@ -177,5 +177,7 @@ Data Received from CryptoWall Binary:
 [+] Created key from URI: 13349bchmnpqw
 [!] Found ciphertext: ff977e974ca21f20a160ebb12bd99bd616d3690c3f4358e2b8168f54929728a189c8797bfa12cfa031ee9c2fe02e31f0762178b3b640837e34d18407ecbc33
 [+] Recovered plaintext: b'{1|crypt1|C6B359277232C8E248AFD89C98E96D65|0|2|1||55.59.84.254}'
+
+[+] Sending encrypted data blob back to cryptowall process
 127.0.0.1 - - [31/Mar/2020 15:11:52] "[37mPOST /93n14chwb3qpm HTTP/1.1[0m" 200 -
 ```
