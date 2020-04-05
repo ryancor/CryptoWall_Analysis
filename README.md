@@ -8,7 +8,7 @@ A strain of a Crowti ransomware emerged, the variant known as CryptoWall, was sp
 
 The malware's first few steps after injecting threads into explorer and svchost are to generate a 63 byte campaign string which consists of campaign name/ID, computer host's info that gets MD5 hashed, privilege information, and the public IP address of the victim; spotted like this: `{1|crypt1|C6B359277232C8E248AFD89C98E96D65|0|2|1||55.45.75.254}`. The ransomware does not send it back to the C2 in this context, it will transform that text blob into an encrypted string by using an RC4 encryption algorithm that will end up looking like this (which is 63 bytes in size as well, a big RC4 hint): `85b088216433863bdb490295d5bd997b35998c027ed600c24d05a55cea4cb3deafdf4161e6781d2cd9aa243f5c12a717cf64944bc6ea596269871d29abd7e2`. The RC4 algorithm used to transform this blob is exactly the same one used to decrypt the C2 IP addresses.  
 
-The research analysis can be seen at: <medium article coming soon>
+The research analysis can be seen at: {medium article coming soon}
 
 ## Decrypt C2 IP Addresses
 ```
