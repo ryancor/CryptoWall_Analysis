@@ -43,6 +43,7 @@ def EncryptC2ResponseBackToMalware(plaintext_key):
     f.write(pub_key)
     f.close()
 
+    # onion route should be retrieved from tor_site_checksum_finder.py
     c2_dict = b'{216|1pai7ycr7jxqkilp.onion|%b|US|%b}' % (uniqueID.encode(), pub_key)
     rc4_key = ARC4.new(plaintext_key)
     encrypted_data = rc4_key.encrypt(c2_dict)
