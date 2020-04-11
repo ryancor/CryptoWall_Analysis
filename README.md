@@ -183,3 +183,6 @@ Data Received from CryptoWall Binary:
 [+] Sending encrypted data blob back to cryptowall process
 127.0.0.1 - - [31/Mar/2020 15:11:52] "[37mPOST /93n14chwb3qpm HTTP/1.1[0m" 200 -
 ```
+
+## Decrypting Ransomware Infected Files
+### coming soon
