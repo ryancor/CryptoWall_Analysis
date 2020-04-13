@@ -23,8 +23,8 @@ def bytes_to_int(b):
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("[!] Usage: decrypt_file.py [pub_key] [encryped_file]")
+    if len(sys.argv) < 4:
+        print("[!] Usage: decrypt_file.py [pub_key] [encryped_file] [-l/-n]")
         exit(-1)
 
     private_key_file_temp = sys.argv[1]
@@ -43,17 +43,17 @@ def main():
 
     cipher_hex = open(encrypted_file, "rb").read()
 
-    # f = open(private_key_file_temp,'r')
-    # r = RSA.importKey(f.read())
-    # decryptor = PKCS1_OAEP.new(r)
-    # decrypted = decryptor.decrypt(cipher_hex)
-    # print(decrypted)
-
-    cipher_as_int = bytes_to_int(cipher_hex)
-    message_as_int = simple_rsa_decrypt(cipher_as_int, private_key)
-    message = int_to_bytes(message_as_int)
-
-    print("Plaintext: {}\n".format(message))
+    if sys.argv[3] == '-l':
+        f = open(private_key_file_temp, 'r')
+        r = RSA.importKey(f.read())
+        decryptor = PKCS1_OAEP.new(r)
+        decrypted = decryptor.decrypt(cipher_hex)
+        print(decrypted)
+    else:
+        cipher_as_int = bytes_to_int(cipher_hex)
+        message_as_int = simple_rsa_decrypt(cipher_as_int, private_key)
+        message = int_to_bytes(message_as_int)
+        print("Plaintext: {}\n".format(message))
 
 
 if __name__ == "__main__":
