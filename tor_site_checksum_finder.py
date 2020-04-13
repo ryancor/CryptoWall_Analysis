@@ -2,9 +2,10 @@ import pefile
 import string
 import random
 import time
+import sys
 
 
-def GetTorBytes(filename, offset, size):
+def GetCompressedBytes(filename, offset, size):
     pe = pefile.PE(filename)
     enc_arr = []
 
@@ -34,7 +35,7 @@ def ConvertArrayBytesToDWORD(arr):
     return int(val, 16)
 
 
-def CompressTORRoute(bytes_array, site):
+def CompressRoute(bytes_array, site):
     ret_value = 0xFFFFFFFF
     siteLen = len(site)
     for i in range(siteLen):
@@ -47,22 +48,43 @@ def CompressTORRoute(bytes_array, site):
 
 
 def main():
-    bytes_array = GetTorBytes("cryptowall_055A0000.bin", 0x188, 0x587-0x188)
-    # this address is from old cryptowall variants, looking at subroutine_004074A0,
-    # 0xc7700797 was generated from this onion route
-    assert(CompressTORRoute(bytes_array, "1pai7ycr7jxqkilp.onion") == '0xc7700797')
-    print("[+] Assertion Passed.\nAttempting to brute-force checksum...")
-    time.sleep(3)
+    bytes_array = GetCompressedBytes("cryptowall_055A0000.bin", 0x188, 0x587-0x188)
+    if len(sys.argv) != 3:
+        # this address is from old cryptowall variants, looking at subroutine_004074A0,
+        # 0xc7700797 was generated from this onion route
+        assert(CompressRoute(bytes_array, "1pai7ycr7jxqkilp.onion") == '0xc7700797')
+        print("[+] Assertion Passed.\nAttempting to brute-force checksum...")
+        time.sleep(3)
 
-    while True:
-        onion_route = "1%s.onion" % GenerateOnionString()
-        route_value = CompressTORRoute(bytes_array, onion_route)
-        # this cmp of checksums can be found at .text:00404FBF
-        if route_value == '0x63680E35' or route_value == '0x30BBB749':
-            print("[+] Found Onion Route: checksum:%s => site:%s" % (route_value, onion_route))
-            break
+        while True:
+            onion_route = "1%s.onion" % GenerateOnionString()
+            route_value = CompressRoute(bytes_array, onion_route)
+            # this cmp of checksums can be found at .text:00404FBF
+            if route_value == '0x63680E35' or route_value == '0x30BBB749':
+                print("[+] Found Onion Route: checksum:%s => site:%s" % (route_value, onion_route))
+                break
+            else:
+                print("[-] Attempt Failed: %s" % route_value)
+    else:
+        if sys.argv[1] == '--check-file-ext':
+            # offset 0xF90 contains approved compressed ext bytes
+            ext_array = GetCompressedBytes("cryptowall_055A0000.bin", 0x7F90, 0x1473 - 0xF90)
+            ext_compressed = CompressRoute(bytes_array, sys.argv[2])
+            isValid = True
+            for i in range(len(ext_array)):
+                try:
+                    ext_array_dword = ConvertArrayBytesToDWORD(ext_array[i*4:(i*4)+4])
+                    if(ext_compressed == hex(ext_array_dword)):
+                        break
+                except:
+                    isValid = False
+
+            if isValid:
+                print("\n[+] '.%s' is a valid file extension for Cryptowall" % sys.argv[2])
+            else:
+                print("\n[-] '.%s' is not a valid file extension for Cryptowall" % sys.argv[2])
         else:
-            print("[-] Attempt Failed: %s" % route_value)
+            print("[!] Usage: tor_site_checksum_finder.py --check-file-ext <ext>")
 
 
 if __name__ == '__main__':

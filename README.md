@@ -184,5 +184,20 @@ Data Received from CryptoWall Binary:
 127.0.0.1 - - [31/Mar/2020 15:11:52] "[37mPOST /93n14chwb3qpm HTTP/1.1[0m" 200 -
 ```
 
+## Check if CryptoWall will encrypt file based on file type
+```
+➜  CryptoWall git:(master) python tor_site_checksum_finder.py --check-file-ext "dll"
+[!] Searching PE sections for compressed .data
+[!] Searching PE sections for compressed extension .data
+
+[-] '.dll' is not a valid file extension for Cryptowall
+
+➜  CryptoWall git:(master) python tor_site_checksum_finder.py --check-file-ext "py"
+[!] Searching PE sections for compressed .data
+[!] Searching PE sections for compressed extension .data
+
+[+] '.py' is a valid file extension for Cryptowall
+```
+
 ## Decrypting Ransomware Infected Files
 ### coming soon
