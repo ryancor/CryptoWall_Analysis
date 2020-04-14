@@ -70,14 +70,15 @@ def main():
             # offset 0xF90 contains approved compressed ext bytes
             ext_array = GetCompressedBytes("cryptowall_055A0000.bin", 0x7F90, 0x1473 - 0xF90)
             ext_compressed = CompressRoute(bytes_array, sys.argv[2])
-            isValid = True
+            isValid = False
             for i in range(len(ext_array)):
                 try:
                     ext_array_dword = ConvertArrayBytesToDWORD(ext_array[i*4:(i*4)+4])
                     if(ext_compressed == hex(ext_array_dword)):
+                        isValid = True
                         break
                 except:
-                    isValid = False
+                    pass
 
             if isValid:
                 print("\n[+] '.%s' is a valid file extension for Cryptowall" % sys.argv[2])
