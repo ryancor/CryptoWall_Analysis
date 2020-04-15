@@ -62,8 +62,5 @@ def main():
         print("Plaintext: {}\n".format(message))
 
 
-    return
-
-
 if __name__ == "__main__":
     main()
