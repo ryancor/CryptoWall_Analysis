@@ -14,6 +14,7 @@ extractions/file_ca963033b9a285b8cd0044df38146a932c838071.txt
 extractions/floss_ca963033b9a285b8cd0044df38146a932c838071.txt
 extractions/strings_ca963033b9a285b8cd0044df38146a932c838071.txt
 extractions/ioc_ca963033b9a285b8cd0044df38146a932c838071.txt
-extractions/priv_key*
+extractions/*.pem
 extractions/*.txt
 In_Progress/*.exe
+In_Progress/__pycache__
