@@ -5,6 +5,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import AES
 
 
 def simple_rsa_decrypt(c, privatekey):
@@ -47,19 +48,32 @@ def main():
                 password = None
             )
 
-        enc_data = open(enc_file, 'rb').read()[16:]
+        enc_data = open(enc_file, 'rb').read()
+        enc_data_hash = enc_data[0:16]
+        enc_data_aes_encrypted_key = enc_data[16:272]
+        enc_data_remainder = enc_data[272:]
 
-        # f = open(priv_key,'r')
-        # r = RSA.importKey(f.read())
-        # decryptor = PKCS1_OAEP.new(r)
-        # decrypted = decryptor.decrypt(enc_data)
-        # print(decrypted)
+        f = open(priv_key,'r')
+        r = RSA.importKey(f.read())
+        decryptor = PKCS1_OAEP.new(r)
+        try:
+            decrypted = decryptor.decrypt(enc_data_aes_encrypted_key)
+            print("Plaintext AES Key: {}\n".format(decrypted))
+        except Exception as e:
+            print("Error: {}".format(e))
 
-        cipher_as_int = bytes_to_int(enc_data)
-        message_as_int = simple_rsa_decrypt(cipher_as_int, private_key)
-        message = int_to_bytes(message_as_int)
+        # cipher_as_int = bytes_to_int(enc_data_aes_encrypted_key)
+        # message_as_int = simple_rsa_decrypt(cipher_as_int, private_key)
+        # message = int_to_bytes(message_as_int)
+        # print("Plaintext AES Key: {}\n".format(message))
 
-        print("Plaintext: {}\n".format(message))
+        # don't hardcode the key, TODO extract key from bytes 16-272
+        # key was extracted from 64 byte value => 08020000106600002000000040B4247954AF27637CE4F7FABFE1CCFC6CD55FC724CAA840F82848EA4800B32000000000000000000000000000000000
+        key = bytes.fromhex('40B4247954AF27637CE4F7FABFE1CCFC6CD55FC724CAA840F82848EA4800B320')
+        cipher = AES.new(key, AES.MODE_ECB)
+        plaintext = cipher.decrypt(enc_data_remainder)
+        print("Plaintext from file: {}\n".format(plaintext))
+
 
 
 if __name__ == "__main__":

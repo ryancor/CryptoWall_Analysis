@@ -200,4 +200,11 @@ Data Received from CryptoWall Binary:
 ```
 
 ## Decrypting Ransomware Infected Files
-### coming soon
+### coming soon (Need to fix extraction of AES key since the key is encrypted using RSA pubKey)
+```
+➜  CryptoWall git:(master) python In_Progress/decrypt_file.py loveme.txt priv_key_1.pem
+[+] Decrypting file without public key
+[+] Found hash header => e91049c35401f2b4a1a131bd992df7a6
+Error: Incorrect decryption.
+Plaintext from file: b'"hello world" \r\n\xfc\xca\xeb\xc8H\xa0\x9c\xcd\xc6\xd4\x90\x11IZ%\xb0'
+```
