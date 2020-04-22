@@ -13,10 +13,8 @@ BOOL ReadKeyFromFile(HANDLE hFile, void *Buffer, DWORD BufSize, DWORD *BytesRead
   LPBYTE pBuffer = (LPBYTE) Buffer;
   DWORD dwRead;
 
-  // 272nd byte is the last byte from encrypted key, rest is encrypted plaintext
-  if (!ReadFile(hFile, pBuffer, 272, &dwRead, NULL))
+  if (!ReadFile(hFile, pBuffer, BufSize, &dwRead, NULL))
   {
-    printf("[-] Could not read from file\n");
     return FALSE;
   }
 
@@ -98,6 +96,8 @@ BOOL DecryptFromFile(char *argv)
 {
   DWORD bytesRead;
   const UINT blockSize = 256;
+  // 272nd byte is the last byte from encrypted key, rest is encrypted plaintext
+  const UINT Hash_AES_Offset = 272;
   LPBYTE fileBuffer = new BYTE[blockSize+16];
   LPBYTE keyBuffer = new BYTE[blockSize];
 
@@ -107,13 +107,15 @@ BOOL DecryptFromFile(char *argv)
     NULL
   );
 
-  if(!ReadKeyFromFile(hFile, fileBuffer, blockSize, &bytesRead))
+  if(!ReadKeyFromFile(hFile, fileBuffer, Hash_AES_Offset, &bytesRead))
   {
+    printf("[-] Could not read from file\n");
     return FALSE;
   }
 
-  memcpy(keyBuffer, fileBuffer+16, 256);
-  bytesRead -= 16;
+  memcpy(keyBuffer, fileBuffer+16, blockSize);
+  bytesRead -= 16; // we only want to read 256 bytes,
+                  // since first 16 bytes of are MD5 hash of public_key
 
   if (!CryptDecrypt(hKey, NULL, FALSE, 0, keyBuffer, &bytesRead))
   {
