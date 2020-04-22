@@ -8,37 +8,19 @@
 HCRYPTPROV hProvider = NULL;
 HCRYPTKEY hKey = NULL;
 
-BOOL ReadBlocksFromFile(HANDLE hFile, void *Buffer, DWORD BufSize, DWORD *BytesRead)
+BOOL ReadKeyFromFile(HANDLE hFile, void *Buffer, DWORD BufSize, DWORD *BytesRead)
 {
-  if (BytesRead)
-  {
-    *BytesRead = 0;
-  }
-
   LPBYTE pBuffer = (LPBYTE) Buffer;
   DWORD dwRead;
 
-  while (BufSize > 0)
+  // 272nd byte is the last byte from encrypted key, rest is encrypted plaintext
+  if (!ReadFile(hFile, pBuffer, 272, &dwRead, NULL))
   {
-    if (!ReadFile(hFile, pBuffer, BufSize, &dwRead, NULL))
-    {
-      return FALSE;
-    }
-
-    if (dwRead == 0)
-    {
-      break;
-    }
-
-    pBuffer += dwRead;
-    BufSize -= dwRead;
-
-    if (BytesRead)
-    {
-      *BytesRead += dwRead;
-    }
+    printf("[-] Could not read from file\n");
+    return FALSE;
   }
 
+  printf("[!] Extracted encrypted AES keys from file\n");
   return TRUE;
 }
 
@@ -115,8 +97,9 @@ BOOL ImportPrivateKey(LPTSTR filename)
 BOOL DecryptFromFile(char *argv)
 {
   DWORD bytesRead;
-  const UINT blockSize = 214;
-  LPBYTE fileBuffer = new BYTE[blockSize+500];
+  const UINT blockSize = 256;
+  LPBYTE fileBuffer = new BYTE[blockSize+16];
+  LPBYTE keyBuffer = new BYTE[blockSize];
 
   HANDLE hFile = CreateFile(argv, GENERIC_READ,
     0x7, NULL,
@@ -124,20 +107,24 @@ BOOL DecryptFromFile(char *argv)
     NULL
   );
 
-  if(!ReadBlocksFromFile(hFile, fileBuffer, blockSize, &bytesRead))
+  if(!ReadKeyFromFile(hFile, fileBuffer, blockSize, &bytesRead))
   {
     return FALSE;
   }
 
-  if (!CryptDecrypt(hKey, NULL, FALSE, 0, fileBuffer, &bytesRead))
+  memcpy(keyBuffer, fileBuffer+16, 256);
+  bytesRead -= 16;
+
+  if (!CryptDecrypt(hKey, NULL, FALSE, 0, keyBuffer, &bytesRead))
   {
       printf("[-] CryptDecrypt failed with error 0x%.8X\n", GetLastError());
-      //return FALSE;
+      return FALSE;
   }
 
+  printf("[+] Decrypted AES Key => ");
   for(int i = 0; i < bytesRead; i++)
   {
-    printf("%c ", fileBuffer[i]);
+    printf("%02x", keyBuffer[i]);
   }
 
   return TRUE;
@@ -168,7 +155,7 @@ int main(int argc, char **argv)
 
   if(DecryptFromFile(argv[2]))
   {
-    printf("\n[+] Successfully decrypted file\n");
+    printf("\n[+] Successfully decrypted key from file\n");
   }
 
   return 0;
