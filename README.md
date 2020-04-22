@@ -209,8 +209,8 @@ Data Received from CryptoWall Binary:
 [+] Decrypted AES Key => 08020000106600002000000040b4247954af27637ce4f7fabfe1ccfc6cd55fc724caa840f82848ea4800b320
 [+] Successfully decrypted key from file
 
-➜  CryptoWall git:(master) python In_Progress/decrypt_file.py loveme.txt
-[+] Decrypting file without public key
+➜  CryptoWall git:(master) python In_Progress/decrypt_file.py loveme.txt 40b4247954af27637ce4f7fabfe1ccfc6cd55fc724caa840f82848ea4800b320
+[+] Decrypting file
 [+] Found hash header => e91049c35401f2b4a1a131bd992df7a6
 [+] Plaintext from file: b'"hello world" \r\n\xfc\xca\xeb\xc8H\xa0\x9c\xcd\xc6\xd4\x90\x11IZ%\xb0'
 ```
