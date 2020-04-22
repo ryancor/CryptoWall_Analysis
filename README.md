@@ -200,7 +200,6 @@ Data Received from CryptoWall Binary:
 ```
 
 ## Decrypting Ransomware Infected Files
-### coming soon (Need to fix extraction of AES key since the key is encrypted using RSA pubKey)
 ```
 ➜  CryptoWall git:(master) wine In_Progress/decrypt_aes_key.exe priv_key_1.pem loveme.txt
 [+] Initialized crypto provider
